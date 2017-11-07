@@ -5,8 +5,8 @@ Model compression CLI tool for [keras](https://github.com/fchollet/keras).
 
 ## Requirements
 - Python 3.5, 3.6
-- keras
-    - We tested on keras 2.0.3 (TensorFlow backend)
+- Keras
+    - We tested on Keras 2.0.3 (TensorFlow backend)
 
 ## Install
 ```
