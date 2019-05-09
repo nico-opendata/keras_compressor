@@ -41,6 +41,12 @@ def gen_argparser():
     parser.add_argument('--log-level', type=str, default='INFO',
                         choices=['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'],
                         help='log level. Default: INFO')
+
+    parser.add_argument('--include', type=str, default='',
+                        help='module to include by importing')
+
+    parser.add_argument('--custom-objects', type=str,  default='',
+                        help='ability to pass in custom objects to load_model in keras default is blank')
     return parser
 
 
@@ -50,7 +56,15 @@ def main():
 
     logging.basicConfig(level=getattr(logging, args.log_level))
 
-    model = load_model(args.model)  # type: keras.models.Model
+    if args.include != '':
+        exec(open(args.include).read())
+
+    kwargs = {}
+    if args.custom_objects != '':
+        kwargs['custom_objects'] = {args.custom_objects: eval(args.custom_objects)}
+
+    model = load_model(args.model, **kwargs)
+
     total_params_before = sum(count_total_params(model))
     model = compress(model, acceptable_error=args.error)
     total_params_after = sum(count_total_params(model))
